@@ -281,6 +281,57 @@ the property becomes [=invalid at computed-value time=]
 	and becoming ''inherit''.
 </div>
 
+Similarly, registering a property does not affect APIs which operate on
+declared values; they are treated as unregistered, regardless of the registered
+syntax. However, for APIs that operate on computed values, registering a
+property gives the corresponding value a type.
+
+<div class="example">
+	Initially, if we define some (unregistered) custom property:
+
+	<pre class='lang-html'>
+		&lt;div id="mydiv" style="--my-length: 10px">&lt;/div>
+	</pre>
+
+	Retrieving the value of '--my-length' through either {{attributeStyleMap}} or
+	{{computedStyleMap()}} will produce a {{CSSUnparsedValue}} in both cases.
+
+	However, if we register the property:
+
+	<pre class='lang-javascript'>
+	CSS.registerProperty({
+		name: "--my-length",
+		syntax: "&lt;length>",
+		initialValue: "0px",
+		inherits: false
+	});
+	</pre>
+
+	Retrieving the value of '--my-length' through {{attributeStyleMap}} will
+	still produce a {{CSSUnparsedValue}}, but retrieving it through
+	{{computedStyleMap()}} will now instead produce a {{CSSUnitValue}}.
+
+	Further, the value of a registered property may be modified as if it were
+	unregistered:
+
+	<pre class='lang-javascript'>
+	mydiv.attributeStyleMap.set('--my-length', new CSSUnparsedValue(['not-a-length']));
+	</pre>
+
+	The above causes '--my-length' to be [=invalid at computed-value time=], hence
+	retrieving the value of '--my-length' through {{computedStyleMap()}} will
+	produce a {{CSSUnitValue}} with the value '0px' (the 'initialValue').
+
+	Finally, note that for APIs that operate on declared values, only
+	{{CSSUnparsedValue}} match custom properties (registered or not). Hence, the
+	following is invalid, for example:
+
+	<pre class='lang-javascript'>
+	mydiv.attributeStyleMap.set('--my-length', CSS.px(10));
+	</pre>
+
+</div>
+
 Supported syntax strings {#supported-syntax-strings}
 ----------------------------------------------------
 
