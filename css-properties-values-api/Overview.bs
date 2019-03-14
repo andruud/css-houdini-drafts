@@ -29,6 +29,7 @@ Repository: w3c/css-houdini-drafts
 spec:css-color-4; type:property; text:color
 spec:css-syntax-3; type:dfn;
 	text:input stream
+
 	text:starts with an identifier
 	text:consume a name
 spec:css-transforms-1; type:type; text:<transform-function>
@@ -800,6 +801,37 @@ string.
 	<<dimension-token>> with a value of '80' and unit 'px'.
 
 </div>
+
+CSSOM {#cssom}
+==============
+
+CSSStyleValue reification
+-------------------------
+
+Values of registered custom properties reify according to the type of the
+underlying value.
+
+: <<length>>
+: <<integer>>
+: <<number>>
+: <<angle>>
+: <<time>>
+: <<resolution>>
+: <<percentage>>
+: <<length-percentage>>
+:: Reified as a numeric value.
+: <<transform-function>>
+:: Reified as <<transform-function>>.
+: <<transform-list>>
+:: Reified as <<transform-list>>.
+: <<image>>
+:: Reified as 'CSSImageValue'.
+: CSS identifier
+:: Reified as an identifier.
+: Token sequence
+:: Reified as a list of component values.
+: Anything else
+:: Reified as a CSSStyleValue.
 
 Examples {#examples}
 ====================
