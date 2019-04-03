@@ -805,10 +805,36 @@ string.
 CSSOM {#cssom}
 ==============
 
-CSSStyleValue reification
--------------------------
+CSSStyleDeclaration Behavior
+----------------------------
 
-Values of registered custom properties reify according to the type of the
+The <a>set a CSS declaration</a> algorithm gains an additional constraint
+for registered custom properties:
+
+* The target declaration must have a value that matches the registered syntax
+	of the property.
+
+This means that once a property is registered, it is not possible to use
+{{setProperty()}} with a token sequence that violates the registered syntax
+of the property.
+
+Note: Registering a property does not invalidate declared values. For example,
+an existing {{CSS declaration}} with an unregistered custom property --x and
+value "0px" will remain unchanged, even if --x is subsequently registered with
+"&lt;color>" syntax. However, --x will be invalid at computed-value time, as a
+result of the registration.
+
+Reification
+-----------
+
+For specified values, the value is parsed against the registered syntax of
+the property:
+
+	1. If the parsing succeeds, the result is then reified as if it were a
+		computed value.
+	2. Otherwise, reify a list of component values.
+
+For computed values, the value is reifed according to the type of the
 underlying value.
 
 : <<length>>
@@ -832,6 +858,7 @@ underlying value.
 :: Reified as a list of component values.
 : Anything else
 :: Reified as a CSSStyleValue.
+
 
 Examples {#examples}
 ====================
