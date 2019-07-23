@@ -338,12 +338,12 @@ so long as you don't violate the (very liberal) syntax for custom properties.
 
 Registering a custom property does not change this.
 Even if a custom property is, for example,
-registered with `syntax: "&lt;color>"`,
+registered with `syntax: "<color>"`,
 a rule like `@supports (--foo: 1em) {...}`
 will still evaluate as true and apply those styles.
 
 Note: This matches the parsing behavior of registered custom properties.
-A registered custom property specified as `"&lt;color>"`
+A registered custom property specified as `"<color>"`
 but written as `--foo: 1em;` will still be accepted as valid at parse-time,
 but be automatically [=invalid at computed-value time=].
 As ''@supports'' tests parse behavior,
@@ -878,7 +878,7 @@ The syntax of ''@property'' is:
 if either are missing,
 the entire rule is invalid and must be ignored.
 The 'initial-value' descriptor is optional
-only if the syntax is the [=universal syntax descriptor=],
+only if the syntax is the [=universal syntax definition=],
 otherwise the descriptor is required;
 if it's missing, the entire rule is invalid and must be ignored.
 
@@ -887,7 +887,7 @@ the entire rule is invalid and must be ignored.
 
 If multiple valid ''@property'' rules are defined for the same <<custom-property-name>>,
 the last one in stylesheet order "wins".
-A custom property registration from {{CSS/registerProperty|CSS.registerProperty()}}
+A custom property registration from {{registerProperty()}}
 further wins over any ''@property'' rules
 for the same <<custom-property-name>>.
 
@@ -907,7 +907,7 @@ The 'syntax' descriptor {#the-syntax-descriptor}
 
 Specifies the syntax of the custom property,
 in the form defined by [[#syntax-strings]].
-This descriptor is equivalent to the {{PropertyDescriptor/syntax|syntax}} member of {{PropertyDescriptor}}.
+This descriptor is equivalent to the {{PropertyDescriptor/syntax|syntax}} member of {{PropertyDefinition}}.
 
 The 'syntax' descriptor is required for the ''@property'' rule to be valid;
 if it's missing, the ''@property'' rule is invalid.
@@ -927,7 +927,7 @@ The 'inherits' descriptor {#inherits-descriptor}
 	</pre>
 
 Specifies whether or not the custom property inherits.
-This is equivalent to the {{PropertyDescriptor/inherits}} member of {{PropertyDescriptor}}.
+This is equivalent to the {{PropertyDescriptor/inherits}} member of {{PropertyDefinition}}.
 
 The inherits descriptor is required for the ''@property'' rule to be valid;
 if it's missing, the ''@property'' rule is invalid.
@@ -944,14 +944,14 @@ The 'initial-value' descriptor {#initial-value-descriptor}
 	</pre>
 
 Specifies the [=initial value=] of the custom property.
-This is equivalent to the {{PropertyDescriptor/initialValue}} member of {{PropertyDescriptor}}.
+This is equivalent to the {{PropertyDescriptor/initialValue}} member of {{PropertyDefinition}}.
 
-If the value of the 'syntax' descriptor is the [=universal syntax descriptor=],
+If the value of the 'syntax' descriptor is the [=universal syntax definition=],
 then the 'initial-value' descriptor is optional.
 If omitted, the initial value of the property is the [=guaranteed-invalid value=].
 
 Otherwise,
-if the value of the 'syntax' descriptor is not the [=universal syntax descriptor=],
+if the value of the 'syntax' descriptor is not the [=universal syntax definition=],
 the following conditions must be met for the the ''@property'' rule to be valid:
 
 	* The 'initial-value' descriptor must be present.
